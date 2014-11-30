@@ -31,7 +31,6 @@
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
     [self tableView:tableView toggleAtIndexPath:indexPath];
-
 }
 
 - (void)closeOpenCells {
@@ -41,14 +40,14 @@
     }
 }
 
-- (void)tableView:(UITableView *)tableView toggleAtIndexPath:(NSIndexPath *)indexPath {
-    DSCellPath *path = [topCellLevel pathToCellAtIndex:indexPath.row];
+- (void)tableView:(UITableView *)tableView toggleAtPath:(DSCellPath *)path {
     DSCellLevel *level = [topCellLevel getLeafLevel:path];
 
     NSInteger indexOfClickedCellWithinLevel = [[path.levelIndexes lastObject] integerValue];
 
     if ([level hasOpenChildLevelAtIndex:indexOfClickedCellWithinLevel]) {
         [self deleteFrom:tableView childLevelOfLevel:level atIndex:[topCellLevel flattenedIndexOfCellInLevel:level atIndex:indexOfClickedCellWithinLevel]];
+
     } else {
         if ([level hasOpenChildLevelButAtDifferentIndex:indexOfClickedCellWithinLevel]) {
             [self deleteFrom:tableView childLevelOfLevel:level atIndex:[topCellLevel flattenedIndexOfExpandedCellInLevel:level]];
@@ -61,7 +60,21 @@
         NSIndexPath *newIndexPath = [NSIndexPath indexPathForRow:indexFromRootLevel inSection:0];
 
         [tableView scrollToRowAtIndexPath:newIndexPath atScrollPosition:UITableViewScrollPositionTop animated:YES];
+
+        if (self.cellToggleBlock) {
+            UITableViewCell *cell = [tableView cellForRowAtIndexPath:newIndexPath];
+            self.cellToggleBlock(cell, YES);
+        }
     }
+}
+
+- (void)tableView:(UITableView *)tableView toggleAtIndexPath:(NSIndexPath *)indexPath {
+    DSCellPath *path = [self cellPathForIndexPath:indexPath];
+    [self tableView:tableView toggleAtPath:path];
+}
+
+- (DSCellPath *)cellPathForIndexPath:(NSIndexPath *)indexPath {
+    return [topCellLevel pathToCellAtIndex:indexPath.row];;
 }
 
 - (void)insertInto:(UITableView *)tableView itemsOfCount:(NSInteger)rowCount atIndex:(NSInteger)index withinLevel:(DSCellLevel *)level {
@@ -73,6 +86,10 @@
 - (void)deleteFrom:(UITableView *)tableView childLevelOfLevel:(DSCellLevel *)level atIndex:(NSInteger)index {
     NSInteger noOfCellsToRemove = [level removeChildLevel];
     [tableView deleteRowsAtIndexPaths:[self indexPathsForCellCount:noOfCellsToRemove startingFromIndex:index] withRowAnimation:UITableViewRowAnimationFade];
+    if (self.cellToggleBlock) {
+        UITableViewCell *cell = [tableView cellForRowAtIndexPath:[NSIndexPath indexPathForRow:index inSection:0]];
+        self.cellToggleBlock(cell, NO);
+    }
 }
 
 - (NSMutableArray *)indexPathsForCellCount:(NSInteger)count startingFromIndex:(NSInteger)index {
