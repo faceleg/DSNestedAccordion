@@ -27,9 +27,8 @@
         case 2:
             return [self noOfNotableBeerStylesForStyleAtIndex:[path.levelIndexes[1] integerValue] withFlavorAtIndex:[path.levelIndexes[0] integerValue]];
         default:
-            0;
+            return 0;
     }
-    return 0;
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForPath:(DSCellPath *)path {
