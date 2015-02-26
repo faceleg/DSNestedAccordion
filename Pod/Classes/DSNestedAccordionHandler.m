@@ -113,7 +113,7 @@
 }
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
-    return [self tableView:tableView heightForRowAtPath:[self cellPathForIndexPath:indexPath]];
+    return [self tableView:tableView heightForRowAtPath:[topCellLevel pathToCellAtIndex:indexPath]];
 }
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtPath:(DSCellPath *)path {
@@ -123,7 +123,7 @@
 // NOTE: Set the table view's estimatedRowHeight property instead of implementing the below method, UNLESS
 // you have extreme variability in your row heights and you notice the scroll indicator "jumping" as you scroll.
 - (CGFloat)tableView:(UITableView *)tableView estimatedHeightForRowAtIndexPath:(NSIndexPath *)indexPath {
-    return [self tableView:tableView estimatedHeightForRowAtPath:[self cellPathForIndexPath:indexPath]];
+    return [self tableView:tableView estimatedHeightForRowAtPath:[topCellLevel pathToCellAtIndex:indexPath.row]];
 }
 
 - (CGFloat)tableView:(UITableView *)tableView estimatedHeightForRowAtPath:(DSCellPath *)path {
