@@ -25,6 +25,4 @@ typedef void (^cellToggleBlock)(UITableViewCell *cell, BOOL expanded);
 
 - (DSCellPath *)cellPathForIndexPath:(NSIndexPath *)indexPath;
 
-- (CGFloat)tableView:(UITableView *)tableView heightForRowAtPath:(DSCellPath *)path;
-- (CGFloat)tableView:(UITableView *)tableView estimatedHeightForRowAtPath:(DSCellPath *)path;
 @end
