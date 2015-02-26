@@ -113,7 +113,7 @@
 }
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
-    return [self tableView:tableView heightForRowAtPath:[topCellLevel pathToCellAtIndex:indexPath.row]];
+    return [self tableView:tableView heightForRowAtPath:[topCellLevel pathToCellAtIndex:indexPath]];
 }
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtPath:(DSCellPath *)path {
