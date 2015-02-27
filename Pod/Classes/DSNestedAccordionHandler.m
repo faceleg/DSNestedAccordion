@@ -112,4 +112,6 @@
     @throw [NSException dsMethodNotOverridden:NSStringFromSelector(_cmd)];
 }
 
+- (void)tableView:(UITableView *)tableView didSelectRowAtPath:(DSCellPath *)path {}
+
 @end
